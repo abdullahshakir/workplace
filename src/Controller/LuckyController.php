@@ -9,7 +9,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LuckyController extends AbstractController
 {
     /**
-     * @Route("lucky/number")
+     * @Route(
+     *     "/lucky/number",
+     *     name="lucky_number",
+     *     condition="context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'"
+     * )
+     *
+     * expressions can also include configuration parameters:
+     * condition: "request.headers.get('User-Agent') matches '%app.allowed_browsers%'"
      */
     public function number(): Response
     {
