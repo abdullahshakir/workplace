@@ -1,0 +1,22 @@
+<li>
+    <!-- begin timeline-body -->
+    <div class="timeline-body">
+        <div class="timeline-header">
+            <span class="username">Add New Post...</span>
+            <span class="justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save" aria-hidden="true"></i> {{ 'label.create_post'|trans }}
+                </button>
+            <span>
+        </div>
+        {{ form_start(form) }}
+            <div class="timeline-content">
+                {{ form_row(form.summary) }}
+            </div>
+            <div class="timeline-footer">
+                {# {{ form_row(form.tags) }} #}
+            </div>
+        {{ form_end(form) }}
+    </div>
+    <!-- end timeline-body -->
+</li>
