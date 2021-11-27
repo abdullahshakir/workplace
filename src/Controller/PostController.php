@@ -11,6 +11,8 @@ use App\Entity\PostFile;
 use App\Form\PostType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Repository\PostRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PostController extends AbstractController
 {
@@ -73,5 +75,25 @@ class PostController extends AbstractController
             'form' => $form->createView(),
             'posts' => $posts
         ]);
+    }
+
+    /**
+     * Deletes a Post entity.
+     *
+     * @Route("/{id}/delete", name="user_post_delete")
+     * @IsGranted("delete", subject="post")
+     */
+    public function delete(Request $request, Post $post, Filesystem $filesystem): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($post->getPostFiles() as $file) {
+            $filesystem->remove($this->getParameter('post_attachments_directory'). '/' .$file->getPath());
+            $em->remove($file);
+        }
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('user_dashboard');
     }
 }

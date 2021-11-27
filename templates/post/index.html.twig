@@ -67,6 +67,9 @@
                               <div class="timeline-header">
                                  <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
                                  <span class="username"><a href="javascript:;">{{ post.user.name }}</a> <small></small></span>
+                                 <a class="btn btn-danger pull-right" href="{{ path('user_post_delete', {id: post.id}) }}" onclick="return confirm('Are you sure you want to delete this post?')">
+                                    <i class="fa fa-trash" aria-hidden="true"></i> {{ 'action.delete'|trans }}
+                                 </a>
                               </div>
                               <div class="timeline-content">
                                  <p>
