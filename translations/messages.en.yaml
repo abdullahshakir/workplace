@@ -1,2 +1,3 @@
 # translations/messages.en.yaml
 label.create_post: Post
+post.new.placeholder: Write something in..

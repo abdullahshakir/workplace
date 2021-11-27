@@ -36,7 +36,7 @@ class Post
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=PostFile::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PostFile::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
      */
     private $postFiles;
 

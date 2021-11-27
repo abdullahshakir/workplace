@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
+use App\Entity\PostFile;
 use App\Form\PostType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PostController extends AbstractController
 {
@@ -18,23 +20,49 @@ class PostController extends AbstractController
     {
         $post = new Post();
 
-        $form = $this->createForm(PostType::class, $post);
+        $form = $this->createForm(PostType::class, $post)
+                ->add('attachedFiles', FileType::class, [
+                    'multiple' => true,
+                    'mapped' => false,
+                    'data_class' => null,
+                ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Encode the new users password
-            // $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+            $attachedFiles = $form->get('attachedFiles')->getData();
 
-            // // Set their role
-            // $user->setRoles(['ROLE_USER']);
+            $post->setPublishedAt(new \DateTime());
+            $post->setUser($this->getUser());
 
-            // // Save
-            // $em = $this->getDoctrine()->getManager();
-            // $em->persist($user);
-            // $em->flush();
+            foreach($attachedFiles as $file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $newFilename = md5(uniqid()).'.'.$file->guessExtension();
 
-            // return $this->redirectToRoute('app_login');
+                // Move the file to the directory where brochures are stored
+                try {
+                    $file->move(
+                        $this->getParameter('post_attachments_directory'),
+                        $newFilename
+                    );
+                    $postFile = new PostFile();
+                    
+                    $postFile->setName($originalFilename);
+                    $postFile->setPath($newFilename);
+                    $post->addPostFile($postFile);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                
+                unset($file);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+
+            return $this->redirectToRoute('user_dashboard');
         }
 
         return $this->render('post/index.html.twig', [

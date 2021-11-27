@@ -640,3 +640,7 @@ select.form-control:not([size]):not([multiple]) {
 .text-danger, .text-red {
     color: #ff5b57!important;
 }
+
+.timeline-content>textarea {
+    width: 100%;
+}

@@ -1,6 +1,7 @@
 <li>
     <!-- begin timeline-body -->
     <div class="timeline-body">
+        {{ form_start(form) }}
         <div class="timeline-header">
             <span class="username">Add New Post...</span>
             <span class="justify-content-end">
@@ -9,13 +10,12 @@
                 </button>
             <span>
         </div>
-        {{ form_start(form) }}
-            <div class="timeline-content">
-                {{ form_row(form.summary) }}
-            </div>
-            <div class="timeline-footer">
-                {# {{ form_row(form.tags) }} #}
-            </div>
+        <div class="timeline-content">
+            {{ form_widget(form.summary) }}
+        </div>
+        <div class="timeline-footer">
+            {# {{ form_row(form.tags) }} #}
+        </div>
         {{ form_end(form) }}
     </div>
     <!-- end timeline-body -->
