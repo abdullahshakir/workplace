@@ -10,13 +10,14 @@ use App\Entity\Post;
 use App\Entity\PostFile;
 use App\Form\PostType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use App\Repository\PostRepository;
 
 class PostController extends AbstractController
 {
     /**
      * @Route("/dashboard", name="user_dashboard")
      */
-    public function index(Request $request): Response
+    public function index(Request $request, PostRepository $posts): Response
     {
         $post = new Post();
 
@@ -25,7 +26,10 @@ class PostController extends AbstractController
                     'multiple' => true,
                     'mapped' => false,
                     'data_class' => null,
+                    'required' => false,
                 ]);
+
+        $posts = $posts->findBy(['user' => $this->getUser()], ['publishedAt' => 'DESC']);
 
         $form->handleRequest($request);
 
@@ -67,6 +71,7 @@ class PostController extends AbstractController
 
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),
+            'posts' => $posts
         ]);
     }
 }

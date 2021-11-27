@@ -1,3 +1,4 @@
 # translations/messages.en.yaml
 label.create_post: Post
 post.new.placeholder: Write something in..
+post.no_posts_found: No Posts added yet!
