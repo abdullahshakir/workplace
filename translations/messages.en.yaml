@@ -4,3 +4,5 @@ post.new.placeholder: Write something in..
 post.no_posts_found: No Posts added yet!
 action.edit: Edit
 action.delete: Delete
+user.updated_successfully: Profile updated successfully!
+action.close: Close
