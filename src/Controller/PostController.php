@@ -17,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/dashboard", name="user_dashboard")
+     * @Route("/posts", name="user_posts")
      */
     public function index(Request $request, PostRepository $posts): Response
     {
@@ -68,10 +68,10 @@ class PostController extends AbstractController
             $em->persist($post);
             $em->flush();
 
-            return $this->redirectToRoute('user_dashboard');
+            return $this->redirectToRoute('user_posts');
         }
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/posts.html.twig', [
             'form' => $form->createView(),
             'posts' => $posts
         ]);
@@ -94,6 +94,6 @@ class PostController extends AbstractController
         $em->remove($post);
         $em->flush();
 
-        return $this->redirectToRoute('user_dashboard');
+        return $this->redirectToRoute('user_posts');
     }
 }

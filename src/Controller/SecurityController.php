@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
     {
         // if user is already logged in, don't display the login page again
         if ($security->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('user_dashboard');
+            return $this->redirectToRoute('user_posts');
         }
 
         // get the login error if there is one

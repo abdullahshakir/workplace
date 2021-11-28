@@ -6,3 +6,4 @@ action.edit: Edit
 action.delete: Delete
 user.updated_successfully: Profile updated successfully!
 action.close: Close
+user.no_users_found: No Users Found!

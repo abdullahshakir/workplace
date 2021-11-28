@@ -1,0 +1,25 @@
+{% extends 'post/index.html.twig' %}
+
+{% block title %}People{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col col-md-8 offset-md-2 people-list">
+        {% for user in users %}
+        <div class="people-single">
+            <span class="user-image"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
+            <span class="user-name">{{ user.name }}</span>
+            {% if user.id in followings %}
+                <a href="{{ path('user_unfollow', {id: user.id}) }}"><span class="btn btn-warning">UnFollow</span></a>
+            {% else %}
+                <a href="{{ path('user_follow', {id: user.id}) }}"><span class="btn btn-primary">Follow</span></a>
+            {% endif %}
+        </div>
+        {% else %}
+        <li>
+            <h3 align="center"> {{ 'user.no_users_found'|trans }} </h3>
+        </li>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

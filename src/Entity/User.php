@@ -54,9 +54,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $posts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserFollowing::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
+    private $userFollowings;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->userFollowings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +190,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($post->getUser() === $this) {
                 $post->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserFollowing[]
+     */
+    public function getUserFollowings(): Collection
+    {
+        return $this->userFollowings;
+    }
+
+    public function addUserFollowing(UserFollowing $userFollowing): self
+    {
+        if (!$this->userFollowings->contains($userFollowing)) {
+            $this->userFollowings[] = $userFollowing;
+            $userFollowing->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFollowing(UserFollowing $userFollowing): self
+    {
+        if ($this->userFollowings->removeElement($userFollowing)) {
+            // set the owning side to null (unless already changed)
+            if ($userFollowing->getUser() === $this) {
+                $userFollowing->setUser(null);
             }
         }
 
