@@ -96,4 +96,27 @@ class PostController extends AbstractController
 
         return $this->redirectToRoute('user_posts');
     }
+
+    /**
+     * @Route("/feed", name="user_feed")
+     */
+    public function feed(Request $request, PostRepository $posts): Response
+    {
+        $user = $this->getUser();
+
+        $followings = $user->getUserFollowings();
+        $followingsArr = [];
+
+        foreach ($followings as $following) {
+            $followingsArr[] = $following->getFollowingUserId();
+        } 
+
+        $followingsArr[] = $user->getId();
+        $posts = $posts->findByIn('user', $followingsArr);
+
+        return $this->render('post/feed.html.twig', [
+            'posts' => $posts
+        ]);
+    }
+
 }

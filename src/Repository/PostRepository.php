@@ -47,4 +47,14 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByIn($field, $value)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.publishedAt', 'DESC');
+        $qb->where($qb->expr()->In('p.'.$field, '?1'));
+        $qb->setParameter(1, $value);
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }
